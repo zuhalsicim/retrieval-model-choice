@@ -3,7 +3,7 @@
 python -m ragbench prepare      build data/germandpr-test from GermanDPR and write its manifest
 python -m ragbench embed [keys] run the embedding models, each in its own process
 python -m ragbench rerank       rerank the best embedding model with a clear licence
-python -m ragbench quantize     float32, int8 and binary vectors of that model
+python -m ragbench quantize     float32, int8 and binary versions of the stored vectors
 python -m ragbench guard        the prompt-injection classifier
 python -m ragbench compare      paired statistics -> results/comparisons.json
 python -m ragbench report       print the README tables
@@ -50,7 +50,9 @@ def main() -> None:
         for key in args.keys or [r.key for r in settings.RERANKERS]:
             step("run_rerank", key, "--first-stage", first)
     elif args.command == "quantize":
-        for key in args.keys or [compare.first_stage()]:
+        # Every embedding model with stored vectors; it costs seconds, no model is loaded.
+        stored = [e.key for e in settings.EMBEDDERS if (Path("cache") / f"{e.key}.corpus.npy").exists()]
+        for key in args.keys or stored:
             step("run_quant", key)
     elif args.command == "guard":
         for key in args.keys or [g.key for g in settings.GUARDS]:

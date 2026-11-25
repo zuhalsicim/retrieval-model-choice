@@ -120,13 +120,65 @@ def run(key: str, out: Path, cache: Path, smoke: bool) -> dict:
     return result
 
 
+def probe(key: str, passages: int, out: Path) -> dict:
+    """Speed only: encode a fixed random sample of passages and time 20 single queries.
+
+    For a model that is too slow to encode the whole corpus on this CPU. It
+    gives no quality figures.
+    """
+    import random
+
+    import torch
+    from sentence_transformers import SentenceTransformer
+
+    model_settings = settings.embedder(key)
+    corpus, queries, _, _ = data.load()
+    sample = random.Random(settings.SEED).sample(sorted(corpus), passages)
+    folder = fetch_model(model_settings.repo, model_settings.revision)
+    with Timer() as load:
+        model = SentenceTransformer(model_settings.repo, revision=model_settings.revision, device="cpu")
+        model.max_seq_length = model_settings.max_seq_length
+    texts = [model_settings.passage_prefix + corpus[pid] for pid in sample]
+    with torch.inference_mode():
+        with Timer() as encode:
+            model.encode(texts, batch_size=settings.ENCODE_BATCH_SIZE, normalize_embeddings=True)
+        times = []
+        for q in queries[:25]:
+            with Timer() as one:
+                model.encode([model_settings.query_prefix + q["text"]], batch_size=1, normalize_embeddings=True)
+            times.append(one.seconds)
+    result = {
+        "model": {
+            "key": key,
+            "repo": model_settings.repo,
+            "revision": model_settings.revision,
+            "weight_file_bytes": weight_bytes(folder),
+        },
+        "passages_encoded": passages,
+        "load_seconds": load.seconds,
+        "encode_seconds": encode.seconds,
+        "passages_per_second": passages / encode.seconds,
+        "encode_one_query": latency_summary(times[5:]),  # the first 5 are warm-up
+        "peak_memory_bytes": peak_memory_bytes(),
+        "machine": describe(),
+    }
+    out.mkdir(parents=True, exist_ok=True)
+    (out / f"{key}.json").write_text(json.dumps(result, indent=1) + "\n", encoding="utf-8")
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("key", choices=[e.key for e in settings.EMBEDDERS])
     parser.add_argument("--out", default="results/retrieval")
     parser.add_argument("--cache", default="cache")
     parser.add_argument("--smoke", action="store_true")
+    parser.add_argument("--probe", type=int, default=0, help="speed only, on this many passages")
     args = parser.parse_args()
+    if args.probe:
+        result = probe(args.key, args.probe, Path("results/speed-probe"))
+        print(f"{args.key}: {result['passages_per_second']:.2f} passages/s (probe)", flush=True)
+        return
     result = run(args.key, Path(args.out), Path(args.cache), args.smoke)
     means = ", ".join(f"{k} {v:.3f}" for k, v in result["means"].items())
     print(f"{args.key}: {means}; corpus {result['corpus_encode_seconds']:.0f} s", flush=True)

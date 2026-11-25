@@ -27,6 +27,23 @@ def int8_scores(queries: np.ndarray, corpus: np.ndarray) -> np.ndarray:
     return np.atleast_2d(queries).astype(np.int32) @ corpus.astype(np.int32).T
 
 
+def int8_ranges(corpus: np.ndarray) -> np.ndarray:
+    """Per dimension the smallest and largest value over the corpus: shape (2, dims)."""
+    return np.stack([corpus.min(axis=0), corpus.max(axis=0)]).astype(np.float32)
+
+
+def dequantize_int8(values: np.ndarray, ranges: np.ndarray) -> np.ndarray:
+    """Turn int8 codes back into floats: the middle of the step each code stands for.
+
+    quantize_embeddings maps x to floor((x - start) / step) - 128 with
+    step = (max - min) / 255, so the code c stands for start + (c + 128.5) * step.
+    """
+    start = ranges[0]
+    step = (ranges[1] - start) / 255
+    step = np.where(step == 0, 1, step)
+    return (start + (values.astype(np.float32) + 128.5) * step).astype(np.float32)
+
+
 def hamming_distances(queries: np.ndarray, corpus: np.ndarray) -> np.ndarray:
     """Number of differing bits between packed binary vectors (uint8, 8 dimensions per byte)."""
     queries = np.atleast_2d(queries)
@@ -40,18 +57,18 @@ def binary_then_rescore(
     query_float: np.ndarray,
     query_bits: np.ndarray,
     corpus_bits: np.ndarray,
-    corpus_int8: np.ndarray,
+    corpus_rescore: np.ndarray,
     depth: int,
     k: int,
 ) -> np.ndarray:
-    """Binary search for `depth` candidates, then reorder them with the float query against int8 passages.
+    """Binary search for `depth` candidates, then reorder them with the float query against `corpus_rescore`.
 
     This is the usual pattern: the small binary index sits in memory, the
-    int8 vectors are read only for the few candidates. Positions after
-    `depth` keep the binary order.
+    larger vectors for rescoring (here dequantized int8) are read only for
+    the few candidates. Positions after `depth` keep the binary order.
     """
     order = top_k(-hamming_distances(query_bits, corpus_bits).astype(np.float64), max(depth, k))[0]
     head, tail = order[:depth], order[depth:]
-    rescored = query_float.astype(np.float32) @ corpus_int8[head].astype(np.float32).T
+    rescored = query_float.astype(np.float32) @ corpus_rescore[head].astype(np.float32).T
     head = head[np.argsort(-rescored, kind="stable")]
     return np.concatenate([head, tail])[:k]

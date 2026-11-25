@@ -4,7 +4,15 @@ import pandas as pd
 from ragbench.data import build, passage_id, rerank_subset
 from ragbench.language import guess_language
 from ragbench.run_rerank import rerank_one
-from ragbench.search import binary_then_rescore, dot_scores, hamming_distances, int8_scores, top_k
+from ragbench.search import (
+    binary_then_rescore,
+    dequantize_int8,
+    dot_scores,
+    hamming_distances,
+    int8_ranges,
+    int8_scores,
+    top_k,
+)
 
 
 def test_top_k_orders_best_first_and_breaks_ties_by_index():
@@ -34,6 +42,20 @@ def test_binary_rescoring_reorders_only_the_head():
     query_bits = np.packbits(np.ones(8, dtype=np.uint8))
     order = binary_then_rescore(query_float, query_bits, corpus_bits, corpus_int8, depth=2, k=3)
     assert order.tolist() == [1, 0, 2]
+
+
+def test_int8_round_trip_is_within_half_a_step():
+    from sentence_transformers.util.quantization import quantize_embeddings
+
+    rng = np.random.default_rng(0)
+    corpus = rng.normal(size=(500, 16)).astype(np.float32)
+    ranges = int8_ranges(corpus)
+    codes = quantize_embeddings(corpus, "int8", ranges=ranges)
+    back = dequantize_int8(codes, ranges)
+    step = (ranges[1] - ranges[0]) / 255
+    # The maximum of each dimension falls on the edge of the last step, so allow one full step there.
+    assert np.all(np.abs(back - corpus) <= step + 1e-6)
+    assert np.mean(np.abs(back - corpus) <= step / 2 + 1e-6) > 0.99
 
 
 def test_rerank_keeps_the_rest_of_the_list():

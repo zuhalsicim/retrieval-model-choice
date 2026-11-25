@@ -47,7 +47,8 @@ def compare(name: str, metric: str, a: dict[str, float], b: dict[str, float], cl
         "ci95_clustered": [clustered["low"], clustered["high"]],
         "ci95_per_query": [per_query["low"], per_query["high"]],
         "p_clustered": p,
-        "resolved": clustered["low"] > 0 or clustered["high"] < 0,
+        # Resolved only if both say so: the clustered interval excludes 0 and the test is below 0.05.
+        "resolved": (clustered["low"] > 0 or clustered["high"] < 0) and p < 0.05,
     }
 
 
