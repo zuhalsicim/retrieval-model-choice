@@ -1,0 +1,55 @@
+name: ci
+
+# Unit tests, lint, and a smoke run of every step on a few queries.
+# The full benchmark is not run here: it runs on a local CPU (see the README).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ragbench/**"
+      - "tests/**"
+      - "data/**"
+      - "requirements*.txt"
+      - "pyproject.toml"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HF_HUB_DISABLE_TELEMETRY: "1"
+  TQDM_DISABLE: "1"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install (PyTorch for CPU first, so that pip does not fetch the CUDA build)
+        run: |
+          pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-dev.txt
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Unit tests
+        run: pytest -q
+      - name: The derived data still matches its manifest
+        run: python -c "from ragbench import data; data.verify(__import__('pathlib').Path('data/germandpr-test'))"
+      - name: Smoke run (8 queries, small models; downloads about 1.7 GB of weights)
+        run: python -m ragbench smoke
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: smoke-results
+          path: output-smoke/
