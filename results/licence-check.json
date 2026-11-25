@@ -1,0 +1,149 @@
+{
+ "checked_at": "2026-11-25T12:05:06+00:00",
+ "rows": [
+  {
+   "repo": "intfloat/multilingual-e5-small",
+   "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+   "revision_found": true,
+   "licence_in_table": "mit",
+   "licence_on_card": "mit",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "intfloat/multilingual-e5-base",
+   "revision": "d128750597153bb5987e10b1c3493a34e5a4502a",
+   "revision_found": true,
+   "licence_in_table": "mit",
+   "licence_on_card": "mit",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+   "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "ibm-granite/granite-embedding-278m-multilingual",
+   "revision": "a9cb5338491faf32b73dd17b714a31821c021bbf",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "BAAI/bge-m3",
+   "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+   "revision_found": true,
+   "licence_in_table": "mit",
+   "licence_on_card": "mit",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "Alibaba-NLP/gte-multilingual-base",
+   "revision": "6dde5e2ebcac02a5459a3cf310346901fa1dc8ff",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "jinaai/jina-embeddings-v2-base-de",
+   "revision": "3f9eede875721714945b6a99a3198299243cf2be",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "jinaai/jina-embeddings-v3",
+   "revision": "ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+   "revision_found": true,
+   "licence_in_table": "cc-by-nc-4.0",
+   "licence_on_card": "cc-by-nc-4.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "BAAI/bge-reranker-v2-m3",
+   "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+   "revision": "1427fd652930e4ba29e8149678df786c240d8825",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "jinaai/jina-reranker-v2-base-multilingual",
+   "revision": "9cfeff2df7d40d1b78e75e5e9cebec92a99813c9",
+   "revision_found": true,
+   "licence_in_table": "cc-by-nc-4.0",
+   "licence_on_card": "cc-by-nc-4.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "protectai/deberta-v3-base-prompt-injection-v2",
+   "revision": "90c9989b1a342275dd0d1a95aad283c04e075671",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "deepset/deberta-v3-base-injection",
+   "revision": "80dda00d0b0d9a03917a7685e2ddbcd28e04dbb1",
+   "revision_found": true,
+   "licence_in_table": "mit",
+   "licence_on_card": "mit",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "meta-llama/Llama-Prompt-Guard-2-86M",
+   "revision": "a8ded8e697ce7c355e395a0df51f94adb4a2fd27",
+   "revision_found": true,
+   "licence_in_table": "other (llama4)",
+   "licence_on_card": "other (llama4)",
+   "gated": "manual",
+   "same": true
+  },
+  {
+   "repo": "deepset/germandpr",
+   "revision": "5129d02422a66be600ac89cd3e8531b4f97d347d",
+   "revision_found": true,
+   "licence_in_table": "cc-by-4.0",
+   "licence_on_card": "cc-by-4.0",
+   "gated": false,
+   "same": true
+  },
+  {
+   "repo": "deepset/prompt-injections",
+   "revision": "4f61ecb038e9c3fb77e21034b22511b523772cdd",
+   "revision_found": true,
+   "licence_in_table": "apache-2.0",
+   "licence_on_card": "apache-2.0",
+   "gated": false,
+   "same": true
+  }
+ ]
+}
