@@ -1,0 +1,4 @@
+* text=auto eol=lf
+# The derived data is checked against SHA-256 sums. Git must never change its line endings.
+# (This line comes last because later lines win.)
+data/** -text

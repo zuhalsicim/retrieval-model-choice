@@ -1,0 +1,20 @@
+{
+  "source": {
+    "repository": "https://huggingface.co/datasets/deepset/germandpr",
+    "card_revision": "5129d02422a66be600ac89cd3e8531b4f97d347d",
+    "parquet_revision": "d0b867a49c45a44d172041351b5df73a87714372",
+    "file": "plain_text/test/0000.parquet",
+    "sha256": "f6106a22d6d6a6cab1621d70a06e0edd8edea9d1428e52424b1610f83b6228f0",
+    "licence": "CC BY 4.0"
+  },
+  "build": {
+    "seed": 42,
+    "rerank_queries": 300
+  },
+  "files": {
+    "corpus.jsonl": "6afe33d1fb3c92aaf7c1916e6b936aade0c3ee93bfb6ca47db3aa385ab912f1a",
+    "queries.jsonl": "7a159d659f78e852087302955a18b5e1e7258207747961a266352511e5db1da7",
+    "qrels.tsv": "b5799e16f5c1a445e306609bb8f3e695eb7d9c528d9c6032f7539503529376e4",
+    "rerank_queries.txt": "a34c6776ea5ca1f2e64f00fef4a7d5e51f225b8d1c2183cf9216cc795ba75e8a"
+  }
+}
