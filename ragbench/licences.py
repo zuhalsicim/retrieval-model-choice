@@ -59,7 +59,7 @@ ENTRIES = [
         "revision": "a9cb5338491faf32b73dd17b714a31821c021bbf",
         "card_licence": "apache-2.0",
         "commercial": "yes",
-        "measured": "yes",
+        "measured": "planned; download failed",
         "note": "The card lists its training data and says it leaves MS MARCO out because of its licence.",
         "quote": "we do not use the popular MS-MARCO retrieval dataset in our training corpus "
         "due to its non-commercial license",
@@ -70,9 +70,8 @@ ENTRIES = [
         "revision": "5617a9f61b028005a4858fdac845db406aefb181",
         "card_licence": "mit",
         "commercial": "yes",
-        "measured": "speed only",
-        "note": "The card links its fine-tuning data (Shitao/bge-m3-data); that data was not audited here. "
-        "Too slow on this CPU for the full corpus, see the README.",
+        "measured": "planned; download failed",
+        "note": "The card links its fine-tuning data (Shitao/bge-m3-data); that data was not audited here.",
         "quote": "license: mit",
     },
     {
@@ -114,7 +113,7 @@ ENTRIES = [
         "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
         "card_licence": "apache-2.0",
         "commercial": "yes",
-        "measured": "yes",
+        "measured": "planned; download failed",
         "note": "The card does not name its training data.",
         "quote": "license: apache-2.0",
     },
@@ -124,7 +123,7 @@ ENTRIES = [
         "revision": "1427fd652930e4ba29e8149678df786c240d8825",
         "card_licence": "apache-2.0",
         "commercial": "check",
-        "measured": "yes",
+        "measured": "planned; download failed",
         "note": "Trained on mMARCO, a machine translation of MS MARCO. " + MS_MARCO_TERMS + ".",
         "quote": "This model was trained on the [MMARCO](https://hf.co/unicamp-dl/mmarco) dataset. "
         "It is a machine translated version of MS MARCO using Google Translate.",
@@ -146,7 +145,7 @@ ENTRIES = [
         "revision": "90c9989b1a342275dd0d1a95aad283c04e075671",
         "card_licence": "apache-2.0",
         "commercial": "yes",
-        "measured": "yes",
+        "measured": "planned; download failed",
         "note": "English only by its own card, and the project is archived (no further updates).",
         "quote": "It does not detect jailbreak attacks or handle non-English prompts",
     },
